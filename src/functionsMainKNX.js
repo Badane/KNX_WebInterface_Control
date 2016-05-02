@@ -200,11 +200,19 @@ function updateChaser()
 }
 
 /////////////////////////////////////////////////////
+var contractors = [
+    {   
+     "id": "1", 
+        "name": "Joe Blogg",
+        "Weeks": 3,
+        "Photo": "1.png"
+    }
+];
 
 exports.start = function(req,res){    
     server.io.emit('message',"salut");
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({reponse : 'retour JSON'}));
+    //res.setHeader('Content-Type', 'text');
+    res.send("tentative 1000");
   /*  connection.Connect(function () 
     { 
         console.log('Server KNX raised up');

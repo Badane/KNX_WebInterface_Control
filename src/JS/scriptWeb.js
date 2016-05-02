@@ -1,5 +1,7 @@
 var socket = io.connect('http://localhost:8080');
 
+
+
 var light1 = document.getElementById('light1');
 var light2 = document.getElementById('light2');
 var light3 = document.getElementById('light3');
