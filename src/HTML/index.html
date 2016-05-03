@@ -3,31 +3,64 @@
     <head>
         <meta charset="utf-8" />
         <link rel="stylesheet" type="text/css" href="../CSS/styleCSS.css">
+        <link rel="stylesheet" type="text/css" href="../Bootstrap-3.3.6-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../Bootstrap-3.3.6-dist/css/bootstrap-switch.css">
         <title>KNX Web Application</title>
     </head>
  
     <body>
-        <h1 id="grandTitre">Communication avec socket.io !</h1>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid" style="margin-top:6px;">
+                <div class="navbar-header" id="titlePage">
+                   <h2>KNX-Board Web Interface</h2>
+                </div>
+                <div>
+                    <ul class="nav navbar-nav navbar-right" style="margin-top:10px; margin-right:10px;">
+                        <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Connect</button>
+                        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Disconnect</button>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         
-        
-            <input type="button" value="Emebeter le serveur" id="poke"/>
-        
-        <p>
-            <input type="button" value="CONNECT" id="connect"/>
-            <input type="button" value="DISCONNECT" id="disconnect"/>
-        </p>
-        
-        <div id="lightStates">
-            <img id="light1" src="../Images/lightOFF.png" />
-            <img id="light2" src="../Images/lightOFF.png" />
-            <img id="light3" src="../Images/lightOFF.png" />
-            <img id="light4" src="../Images/lightOFF.png" /> 
-        
+        <div id="command" class="container-fluid" style="margin-left=10px;">
+            <h4>Pattern selection</h4>
+            <input type="checkbox" id="patternSwitch" checked data-on-text="<i class='glyphicon glyphicon-star-empty'></i>" data-off-text="<i class='glyphicon glyphicon-star'></i>"data-label-text="<i class='glyphicon glyphicon-option-horizontal'></i>" data-size="large" data-off-color="warning" data-handle-width=100 data-label-width=50>  
         </div>
+        
+        <div class="container-fluid" id="lightStates">
+            <div class="row">
+                    
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="bulbs">
+                        <img id="light1" src="../Images/lightOFF.png"/>
+                    </div>      
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="bulbs">
+                        <img id="light2" src="../Images/lightOFF.png"/>
+                    </div>      
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="bulbs">
+                        <img id="light3" src="../Images/lightOFF.png"/>
+                    </div>      
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="bulbs">
+                        <img id="light4" src="../Images/lightOFF.png"/>
+                    </div>      
+                </div>
+                
+            </div>
+        </div>
+        
         
         <div>
             <script src="/socket.io/socket.io.js"></script>
-            <script src="../JS/jquery-2.2.3.js"></script>    
+            <script src="../JS/jquery-2.2.3.js"></script>          
+            <script src="../Bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+            <script src="../Bootstrap-3.3.6-dist/js/bootstrap-switch.js"></script>
             
             <script src="../JS/scriptWeb.js"></script>
         </div>

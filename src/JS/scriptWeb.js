@@ -7,7 +7,9 @@ var light3 = document.getElementById('light3');
 var light4 = document.getElementById('light4');
 
 var lightValue1, lightValue2, lightValue3, lightValue4;
-            
+
+////////////////////////////////////////////////////////////
+
 socket.on('message', function (message) {
     console.log('Le serveur a un message : '+message);
 });
@@ -39,6 +41,15 @@ socket.on('state',function (address,data) {
     console.log("address : "+address+" et : "+data);
 });
 
+////////////////////////////////////////////////////////////
+
+$("#patternSwitch").bootstrapSwitch();
+$("#patternSwitch").on('switchChange.bootstrapSwitch', function(event,state){
+    console.log(state);
+});
+
+////////////////////////////////////////////////////////////
+
 $('#poke').click(function(){
     socket.emit('message','Coucou le serveur');
 })
@@ -53,6 +64,8 @@ $('#disconnect').click(function(){
     $.get('http://localhost:3001/stop');
 })
 
+////////////////////////////////////////////////////////////
+
 function changeImageState(element)
 {
     alert('changeImagestate');
@@ -64,3 +77,4 @@ function changeImageState(element)
     else   
         src='../Images/lightOFF.png';  
 }
+
