@@ -8,8 +8,8 @@ var eibd = require('eibd');
 exports.KnxHelper = KnxHelper;
 exports.KnxConnectionTunneling = KnxConnectionTunneling;
 
-var localAddress = '192.168.1.117'; //The model
-var remoteAddress ='192.168.1.111'; //Me
+var localAddress = '192.168.0.118'; //The model
+var remoteAddress ='192.168.0.103'; //Me
 
 var connection = new KnxConnectionTunneling(localAddress, 3671, remoteAddress, 13671);
 
@@ -200,20 +200,12 @@ function updateChaser()
 }
 
 /////////////////////////////////////////////////////
-var contractors = [
-    {   
-     "id": "1", 
-        "name": "Joe Blogg",
-        "Weeks": 3,
-        "Photo": "1.png"
-    }
-];
 
 exports.start = function(req,res){    
-    server.io.emit('message',"salut");
-    //res.setHeader('Content-Type', 'text');
-    res.send("tentative 1000");
-  /*  connection.Connect(function () 
+    //server.io.emit('state',"0/2/1",'true');
+    //res.send('Connection');
+    
+    connection.Connect(function () 
     { 
         console.log('Server KNX raised up');
         res.send('Server KNX raised up\n');
@@ -225,7 +217,7 @@ exports.start = function(req,res){
         console.log('Chaser started');
         
         running=true;
-    });   */      
+    });       
 };
 
 exports.stop = function(req,res) {

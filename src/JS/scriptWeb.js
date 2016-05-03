@@ -1,6 +1,5 @@
-var socket = io.connect('http://localhost:8080');
 
-
+var socket = io();
 
 var light1 = document.getElementById('light1');
 var light2 = document.getElementById('light2');
@@ -14,28 +13,30 @@ socket.on('message', function (message) {
 });
 
 socket.on('state',function (address,data) {
-    if(address==='0/2/1')
+    if(address=='0/2/1')
     {
+        alert("addresse = 021");
         lightValue1=data;
         changeImageState(light1);
     }
        
-    else if(address==='0/2/2')
+    else if(address=='0/2/2')
     {
         lightValue2=data;  
         changeImageState(light2);
     }
         
-    else if(address==='0/2/3')
+    else if(address=='0/2/3')
     {
         lightValue3=data;
         changeImageState(light3);
     }
-    else if(address==='0/2/4')
+    else if(address=='0/2/4')
     {
         lightValue4=data;
         changeImageState(light4);
     }
+    console.log("address : "+address+" et : "+data);
 });
 
 $('#poke').click(function(){
@@ -44,21 +45,9 @@ $('#poke').click(function(){
 
 $('#connect').click(function(){
     socket.emit('message','Tentative de connection');
-    $.get("http://localhost:3001/start",function(){
-        alert('succes');
-    })
-        .done(function(){
-            alert('second succcess');
-        })
-        .fail(function(){
-            alert('error');
-        })
-        .always(function(){
-            alert('finished');
-        });
+    $.get("http://localhost:3001/start");
     
 })
-
 $('#disconnect').click(function(){
     socket.emit('message','Tentative de deconnection');
     $.get('http://localhost:3001/stop');
@@ -66,10 +55,12 @@ $('#disconnect').click(function(){
 
 function changeImageState(element)
 {
-    var src=element.getAttribute('src');
-    
-    if(src=='../Images/lightOFF.png')
-        src='../Images/lightON.png';
+    alert('changeImagestate');
+    if(light1.src.match('../Images/lightOFF.png'))
+    {
+        light1.src='../Images/lightON.png';
+        alert('if');
+    }
     else   
         src='../Images/lightOFF.png';  
 }
