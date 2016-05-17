@@ -8,16 +8,7 @@ var path = require('path');
 var fs = require('fs');
 
 require('./routes')(app);
-
-//app.use(cors());
-//web.use(cors());
-
-/*app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});*/
-
+var methodeKNX = require('./functionsMainKNX');
 
 app.get('/', function(req, res) {
     res.send('Hello Rennes\n');
@@ -61,6 +52,8 @@ exports.io = io;
 io.sockets.on('connection', function(socket){
     console.log('Un client est connecté !');
     socket.emit('message','Vous êtes bien connecté !');
+    
+    methodeKNX.initInterface();
     
     socket.on('message', function (message){
         console.log('message : '+message); 

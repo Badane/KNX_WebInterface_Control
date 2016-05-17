@@ -166,6 +166,54 @@ function initLight()
     mode=true; //auto
 }
 
+exports.initInterface = function(req,res){
+    if(connected== null )
+        server.io.emit('global','connected',false);
+    else
+        server.io.emit('global','connected',connected);
+    
+    if(running== null )
+        server.io.emit('global','running',false);
+    else
+        server.io.emit('global','running',running);
+    
+    if(model== null )
+        server.io.emit('global','pattern',true);
+    else
+        server.io.emit('global','pattern',model);
+    
+    if(mode== null )
+        server.io.emit('global','mode',true);
+    else
+        server.io.emit('global','mode',mode);
+    
+    console.log(lightValue1);
+    
+    if(!lightValue1 || lightValue1==null)
+        server.io.emit('state','0/2/1',0);
+    else
+        server.io.emit('state','0/2/1',1);
+    
+    if(!lightValue2 || lightValue2==null)
+        server.io.emit('state','0/2/2',0);
+    else
+        server.io.emit('state','0/2/2',1);
+    
+    if(!lightValue3 || lightValue3==null)
+        server.io.emit('state','0/2/3',0);
+    else
+        server.io.emit('state','0/2/3',1);
+   
+    if(!lightValue4 || lightValue4==null)
+        server.io.emit('state','0/2/4',0);
+    else
+        server.io.emit('state','0/2/4',1);
+};
+
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
 function toggleEveryLight()
 {
     if(model) //chaser first way
@@ -403,9 +451,7 @@ function _changeMode ()
     console.log('Mode changing');
     
     
-    
-    _return ='Mode changing\n';
-    server.io.emit('global','mode',mode);
-    
+    server.io.emit('global','mode',mode); 
+    _return ='Mode changing\n';    
 }
 exports.changeMode = function(req,res){res.send(_changeMode());};
