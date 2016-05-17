@@ -8,8 +8,8 @@ var eibd = require('eibd');
 exports.KnxHelper = KnxHelper;
 exports.KnxConnectionTunneling = KnxConnectionTunneling;
 
-var localAddress = '192.168.0.118'; //The model
-var remoteAddress ='192.168.0.103'; //Me
+var localAddress = '192.168.1.119'; //The model
+var remoteAddress ='192.168.1.107'; //Me
 
 var connection = new KnxConnectionTunneling(localAddress, 3671, remoteAddress, 13671);
 
@@ -27,7 +27,8 @@ var running;
     //state change
 connection.on('event', function(data, data1, data2) {
     console.log('event '+data+' : '+data1); //device address + device value
-
+    server.io.emit('state',data,data1);
+    
     if(data ==='1/1/1' && data1 === '1')
     {
         console.log('Bouton 1 pressed');
@@ -202,8 +203,6 @@ function updateChaser()
 /////////////////////////////////////////////////////
 
 exports.start = function(req,res){    
-    //server.io.emit('state',"0/2/1",'true');
-    //res.send('Connection');
     
     connection.Connect(function () 
     { 
@@ -217,10 +216,13 @@ exports.start = function(req,res){
         console.log('Chaser started');
         
         running=true;
+        server.io.emit('global','running',running);
     });       
 };
 
 exports.stop = function(req,res) {
+    res.send("deconnexion en cours");
+    
     clearInterval(inter);
     console.log('Chaser stoped');
     
@@ -228,7 +230,9 @@ exports.stop = function(req,res) {
         connection.Disconnect();
         }, 700);
     console.log('Server KNX shutted down');
-    res.send('Server KNX shutted down\n');
+    
+    running=false;
+    server.io.emit('global','running',running);
 };
 
 function _pause() 

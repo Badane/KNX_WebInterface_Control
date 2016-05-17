@@ -9,4 +9,28 @@
     margin-top: 30px;
 }
 
+.commandRow
+{
+    text-align: center;
+}
+
+.commandRowInput
+{
+    padding-left: 17%;
+    padding-right: 17%;
+}
+
+#speedInput
+{
+    height: 46px;
+}
+body
+{
+    background:url(../Images/background.png);
+}
+
+.navbar-custom
+{
+    background-color: rgba(20,20,20,0.35);
+}
 

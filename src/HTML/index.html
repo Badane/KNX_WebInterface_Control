@@ -6,26 +6,47 @@
         <link rel="stylesheet" type="text/css" href="../Bootstrap-3.3.6-dist/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../Bootstrap-3.3.6-dist/css/bootstrap-switch.css">
         <title>KNX Web Application</title>
+        <link rel="icon" type="image/png" href="../Images/favicon.png"/>
     </head>
  
     <body>
-        <nav class="navbar navbar-default">
-            <div class="container-fluid" style="margin-top:6px;">
+        <nav class="navbar">
+            <div class="container-fluid navbar-custom" style="padding-top:6px;">
                 <div class="navbar-header" id="titlePage">
                    <h2>KNX-Board Web Interface</h2>
                 </div>
-                <div>
+                <div class=>
                     <ul class="nav navbar-nav navbar-right" style="margin-top:10px; margin-right:10px;">
-                        <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Connect</button>
-                        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Disconnect</button>
+                        <button id="connect" type="button" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Connect</button>
+                        <button id="disconnect" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Disconnect</button>
                     </ul>
                 </div>
             </div>
         </nav>
-        
-        <div id="command" class="container-fluid" style="margin-left=10px;">
-            <h4>Pattern selection</h4>
-            <input type="checkbox" id="patternSwitch" checked data-on-text="<i class='glyphicon glyphicon-star-empty'></i>" data-off-text="<i class='glyphicon glyphicon-star'></i>"data-label-text="<i class='glyphicon glyphicon-option-horizontal'></i>" data-size="large" data-off-color="warning" data-handle-width=100 data-label-width=50>  
+    
+        <div class="command" class="container-fluid" style="margin-left=10px;">
+            <div class = "row">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="commandRow">
+                        <h4>Pattern selection</h4>
+                        <input type="checkbox" id="patternSwitch" checked data-on-text="<i class='glyphicon glyphicon-star-empty'></i>" data-off-text="<i class='glyphicon glyphicon-star'></i>"data-label-text="<i class='glyphicon glyphicon-option-horizontal'></i>" data-size="large" data-off-color="warning" data-handle-width=100 data-label-width=50>  
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="commandRow">
+                        <h4>Controls</h4>
+                        <button id="speedDown" type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-chevron-down"></span></button>
+                        <button id="pause" type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-pause"></span></button>
+                        <button id="speedUp" type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></button>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="input-group commandRow commandRowInput">     
+                        <h4>Manual speed entry</h4>
+                        <input id="speedInput" type="text" class="form-control" placeholder="Choose your speed..."><span class="input-group-btn"><button id="speedInputValidation"class="btn btn-default btn-lg" style="margin-top:39px;" type="button"><span class="glyphicon glyphicon-send"></span></button></span>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="container-fluid" id="lightStates">
