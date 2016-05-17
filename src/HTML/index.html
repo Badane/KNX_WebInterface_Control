@@ -26,26 +26,41 @@
     
         <div class="command" class="container-fluid" style="margin-left=10px;">
             <div class = "row">
+                
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <div class="commandRow">
                         <h4>Pattern selection</h4>
                         <input type="checkbox" id="patternSwitch" checked data-on-text="<i class='glyphicon glyphicon-star-empty'></i>" data-off-text="<i class='glyphicon glyphicon-star'></i>"data-label-text="<i class='glyphicon glyphicon-option-horizontal'></i>" data-size="large" data-off-color="warning" data-handle-width=100 data-label-width=50>  
                     </div>
                 </div>
+                
                 <div class="col-xs-12 col-sm-6 col-md-4">
                     <div class="commandRow">
                         <h4>Controls</h4>
                         <button id="speedDown" type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-chevron-down"></span></button>
-                        <button id="pause" type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-pause"></span></button>
+                        <button id="pauseStart" type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-play"></span></button>
                         <button id="speedUp" type="button" class="btn btn-info btn-lg"><span class="glyphicon glyphicon-chevron-up"></span></button>
-                    </div>
+                    </div>     
                 </div>
-                <div class="col-xs-12 col-md-4">
-                    <div class="input-group commandRow commandRowInput">     
+                
+                 <div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-4 col-md-push-0">
+                    <div class="commandRow">
                         <h4>Manual speed entry</h4>
-                        <input id="speedInput" type="text" class="form-control" placeholder="Choose your speed..."><span class="input-group-btn"><button id="speedInputValidation"class="btn btn-default btn-lg" style="margin-top:39px;" type="button"><span class="glyphicon glyphicon-send"></span></button></span>
+                        <div class="input-group commandRowInput">     
+                            <input id="speedInput" type="text" class="form-control" placeholder="Choose your speed..."><span class="input-group-btn"><button id="speedInputValidation"class="btn btn-default btn-lg" type="button"><span class="glyphicon glyphicon-send"></span></button></span>
+                        </div>
                     </div>
                 </div>
+               
+                <div class="col-xs-12 col-sm-6 col-sm-pull-6 col-md-4 col-md-pull-0 col-md-offset-4">
+                    <div class="commandRow">
+                        <h4>Mode selection</h4>
+                        <input type="checkbox" id="modeSwitch" checked data-on-text="Chaser" data-off-text="Manual"data-label-text="<i class='glyphicon glyphicon-transfer'></i>" data-size="large" data-off-color="warning" data-handle-width=100 data-label-width=50>
+                    </div>
+                </div>
+                
+               
+                
             </div>
         </div>
         

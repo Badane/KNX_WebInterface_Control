@@ -8,6 +8,9 @@ var light4 = document.getElementById('light4');
 
 var lightValue1, lightValue2, lightValue3, lightValue4;
 
+var running;
+var connected;
+
 ////////////////////////////////////////////////////////////
 
 socket.on('message', function (message) {
@@ -47,17 +50,34 @@ socket.on('global',function(id,value){
         console.log("running");
         if(value==true)
         {
+            $(this).find(".glyphicon").removeClass("glyphicon-pause").addClass("glyphicon-play");
+            running=true;
+        }
+        else
+        {
+            $(this).find(".glyphicon").removeClass("glyphicon-play").addClass("glyphicon-pause");
+            running=false;
+        }
+            
+    }
+    
+    if(id=='connected')
+    {
+        console.log('connected');
+        if(value==true)
+        {
             $('#connect').prop('disabled', true);
             $('#disconnect').prop('disabled', false);
-            console.log("run");
+            console.log("connected");
+            connected=true;
         }
         else
         {
             $('#connect').prop('disabled', false);
             $('#disconnect').prop('disabled', true);
-            console.log("!run");
+            console.log("!connected");
+            connected=false;
         }
-            
     }
 });
 
@@ -68,6 +88,8 @@ $("#patternSwitch").on('switchChange.bootstrapSwitch', function(event,state){
      $.get("http://localhost:3001/pattern/change");
 });
 
+$("#modeSwitch").bootstrapSwitch();
+
 ////////////////////////////////////////////////////////////
 
 /*$('#poke').click(function(){
@@ -76,12 +98,23 @@ $("#patternSwitch").on('switchChange.bootstrapSwitch', function(event,state){
 
 $('#connect').click(function(){
     socket.emit('message','Tentative de connection');
-    $.get("http://localhost:3001/start");
+    $.get("http://localhost:3001/connect");
     
 })
 $('#disconnect').click(function(){
     socket.emit('message','Tentative de deconnection');
     $.get('http://localhost:3001/stop');
+})
+$('#pauseStart').click(function(){
+    if(running)
+    {
+        $.get('http://localhost:3001/pause');
+    }
+    else
+    {
+        $.get('http://localhost:3001/start');
+    }
+    
 })
 
 $('#speedInputValidation').click(function(){
@@ -106,25 +139,22 @@ $('#speedDown').click(function(){
     $.get("http://localhost:3001/speed/down");
     
 })
-$('#pause').click(function(){
-    //socket.emit('message','Tentative de deconnection');
-    $.get('http://localhost:3001/pause');
-})
+
 $('#speedUp').click(function(){
     //socket.emit('message','Tentative de deconnection');
     $.get('http://localhost:3001/speed/up');
 })
 
+$('#light1').on('click', function() {
+    //socket.emit('message','Tentative de deconnection');
+   console.log('salut');
+})
 
 
 ////////////////////////////////////////////////////////////
 
 function changeImageState(element, value)
 {
-    /*if(element.src.match('../Images/lightOFF.png'))
-        element.src='../Images/lightON.png';
-    else   
-        element.src='../Images/lightOFF.png'; */
     if(value==0)
         element.src='../Images/lightOFF.png';
     else

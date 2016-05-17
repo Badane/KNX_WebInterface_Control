@@ -8,8 +8,8 @@ var eibd = require('eibd');
 exports.KnxHelper = KnxHelper;
 exports.KnxConnectionTunneling = KnxConnectionTunneling;
 
-var localAddress = '192.168.1.119'; //The model
-var remoteAddress ='192.168.1.107'; //Me
+var localAddress = '192.168.1.118'; //The model
+var remoteAddress ='192.168.1.101'; //Me
 
 var connection = new KnxConnectionTunneling(localAddress, 3671, remoteAddress, 13671);
 
@@ -21,6 +21,7 @@ var indice; //index of the next toggled light - move between 1 & 4
 var inter; //will be initialized as interval
 var model;
 var running;
+var connected;
 
 
 //Listener call
@@ -202,22 +203,37 @@ function updateChaser()
 
 /////////////////////////////////////////////////////
 
-exports.start = function(req,res){    
+exports.connect = function(req,res){    
     
     connection.Connect(function () 
     { 
         console.log('Server KNX raised up');
-        res.send('Server KNX raised up\n');
+        res.send('Server KNX raised up ma gueule\n');
         
         initLight();
-        console.log('Light initialized');
+        console.log('Light initialized');        
+        
+        connected=true;
+        server.io.emit('global','connected',connected);
         
         inter = setInterval(toggleEveryLight,speed);
         console.log('Chaser started');
-        
-        running=true;
-        server.io.emit('global','running',running);
     });       
+};
+
+exports.start = function(req,res){    
+    
+    if(connected)
+    {
+        connection.Connect(function () 
+        {
+            inter = setInterval(toggleEveryLight,speed);
+            console.log('Chaser started');
+
+            running=true;
+            server.io.emit('global','running',running);
+        }); 
+    }
 };
 
 exports.stop = function(req,res) {
