@@ -8,8 +8,8 @@ var eibd = require('eibd');
 exports.KnxHelper = KnxHelper;
 exports.KnxConnectionTunneling = KnxConnectionTunneling;
 
-var localAddress = '192.168.1.118'; //The model
-var remoteAddress ='192.168.1.101'; //Me
+var localAddress = '192.168.1.119'; //The model
+var remoteAddress ='192.168.1.114'; //Me
 
 var connection = new KnxConnectionTunneling(localAddress, 3671, remoteAddress, 13671);
 
@@ -19,8 +19,9 @@ var lightValue1, lightValue2, lightValue3 , lightValue4;
 var speed; 
 var indice; //index of the next toggled light - move between 1 & 4
 var inter; //will be initialized as interval
-var model;
-var running;
+var model; //pattern
+var mode; // auto or manual
+var running; 
 var connected;
 
 
@@ -33,7 +34,7 @@ connection.on('event', function(data, data1, data2) {
     if(data ==='1/1/1' && data1 === '1')
     {
         console.log('Bouton 1 pressed');
-        _pause();
+        _start();
     }
     else if(data ==='1/1/2' && data1 ==='1')
     {
@@ -56,23 +57,47 @@ connection.on('status', function(data, data1, data2) {
         console.log('status '+data+' : '+data1); //device address + device value
 });
 
-/////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
 function toggleLight1() 
 {
     lightValue1 = !lightValue1;
     connection.Action("0/1/1", lightValue1);
 }
+exports.toggle1=function(req,res){
+    if(connected && !mode)
+    {
+        toggleLight1();
+        res.send('toggle light 1');
+    }
+    else
+        res.send('not connected or auto activated');
+};
+
+
 function setLight1(state)
 {
     connection.Action('0/1/1',state);
 }
+
 
 function toggleLight2() 
 {
     lightValue2 = !lightValue2;
     connection.Action("0/1/2", lightValue2);
 }
+exports.toggle2=function(req,res){
+    if(connected && !mode)
+    {
+        toggleLight2();
+        res.send('toggle light 2');
+    }
+    else
+        res.send('not connected or auto activated');
+};
+
 function setLight2(state)
 {
     connection.Action('0/1/2',state);
@@ -83,6 +108,16 @@ function toggleLight3()
     lightValue3 = !lightValue3;
     connection.Action("0/1/3", lightValue3);
 }
+exports.toggle3=function(req,res){
+    if(connected && !mode)
+    {
+        toggleLight3();
+        res.send('toggle light 3');
+    }
+    else
+        res.send('not connected or auto activated');
+};
+
 function setLight3(state)
 {
     connection.Action('0/1/3',state);
@@ -93,12 +128,25 @@ function toggleLight4()
     lightValue4 = !lightValue4;
     connection.Action("0/1/4", lightValue4);
 }
+exports.toggle4=function(req,res){
+    if(connected && !mode)
+    {
+        toggleLight4();
+        res.send('toggle light 4');
+    }
+    else
+        res.send('not connected or auto activated');
+};
+
 function setLight4(state)
 {
     connection.Action('0/1/4',state);
 }
 
-////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+
 
 function initLight()
 {    
@@ -115,6 +163,7 @@ function initLight()
     indice=1;
     model = true;
     running=false;
+    mode=true; //auto
 }
 
 function toggleEveryLight()
@@ -202,39 +251,51 @@ function updateChaser()
 }
 
 /////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
-exports.connect = function(req,res){    
-    
+exports.connect = function(req,res){        
     connection.Connect(function () 
     { 
         console.log('Server KNX raised up');
-        res.send('Server KNX raised up ma gueule\n');
+        res.send('Server KNX raised up\n');
         
         initLight();
-        console.log('Light initialized');        
+        console.log('Light initialized');
         
         connected=true;
         server.io.emit('global','connected',connected);
-        
-        inter = setInterval(toggleEveryLight,speed);
-        console.log('Chaser started');
-    });       
+    });    
 };
 
-exports.start = function(req,res){    
+function _start()
+{
+    var _return;
     
     if(connected)
     {
-        connection.Connect(function () 
+        if(running || !mode)
+        {
+            clearInterval(inter);
+            console.log('Chaser paused');
+            running=false;
+            server.io.emit('global','running',running);
+            _return='pause';
+            
+        }
+        else if(!running && mode)
         {
             inter = setInterval(toggleEveryLight,speed);
-            console.log('Chaser started');
-
+            console.log('Chaser restarted');
             running=true;
             server.io.emit('global','running',running);
-        }); 
+            _rerurn='play';
+        }
     }
-};
+    else
+        _return='non connecté';
+}
+exports.start = function(req,res){res.send(_start());};
 
 exports.stop = function(req,res) {
     res.send("deconnexion en cours");
@@ -247,36 +308,12 @@ exports.stop = function(req,res) {
         }, 700);
     console.log('Server KNX shutted down');
     
-    running=false;
-    server.io.emit('global','running',running);
+    connected=false;
+    server.io.emit('global','connected',connected);
 };
 
-function _pause() 
-{ 
-    var _return;
-    
-    if(running)
-    {
-        clearInterval(inter);
-        console.log('Chaser paused');
-        running=false;
-        _return = 'Chaser paused';
-    }
-    else
-    {
-        inter = setInterval(toggleEveryLight,speed);
-        console.log('Chaser restarted');
-        //res.send('Chaser restarted');
-        running=true;
-        _return = 'Chaser Restarted';
-    }
-    
-    return _return;
-}
-exports.pause = function(req,res) {
-    res.send(_pause());
-}
-
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
 //////////////////////////////////////////////////
 
 exports.changeSpeed = function(req,res) {
@@ -339,6 +376,10 @@ function _decSpeed()
 }
 exports.decSpeed = function(req,res){res.send(_decSpeed());};
 
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+
 function _changePattern () 
 {
     var _return;
@@ -346,9 +387,25 @@ function _changePattern ()
     model=!model;
     console.log('Pattern changing');
     _return ='Pattern changing\n';
+    server.io.emit('global','pattern',model);
+    
 }
 exports.changePattern = function(req,res){res.send(_changePattern());};
 
-exports.getLightValue1 = function(req,res) {
-   
-};
+function _changeMode () 
+{
+    var _return;
+    
+    mode=!mode;
+    if(!mode)
+       _start();
+    
+    console.log('Mode changing');
+    
+    
+    
+    _return ='Mode changing\n';
+    server.io.emit('global','mode',mode);
+    
+}
+exports.changeMode = function(req,res){res.send(_changeMode());};

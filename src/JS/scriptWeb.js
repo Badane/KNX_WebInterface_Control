@@ -50,33 +50,57 @@ socket.on('global',function(id,value){
         console.log("running");
         if(value==true)
         {
-            $(this).find(".glyphicon").removeClass("glyphicon-pause").addClass("glyphicon-play");
+            $('#pauseStart').find(".glyphicon").removeClass("glyphicon-play").addClass("glyphicon-pause");
             running=true;
         }
         else
         {
-            $(this).find(".glyphicon").removeClass("glyphicon-play").addClass("glyphicon-pause");
+            $('#pauseStart').find(".glyphicon").removeClass("glyphicon-pause").addClass("glyphicon-play");
             running=false;
         }
             
     }
     
-    if(id=='connected')
+    else if(id=='connected')
     {
         console.log('connected');
         if(value==true)
         {
             $('#connect').prop('disabled', true);
             $('#disconnect').prop('disabled', false);
-            console.log("connected");
             connected=true;
         }
         else
         {
             $('#connect').prop('disabled', false);
             $('#disconnect').prop('disabled', true);
-            console.log("!connected");
             connected=false;
+        }
+    }
+    
+    else if(id=='pattern')
+    {
+        console.log('pattern');
+        if(value==true)
+        {
+            $("#patternSwitch").bootstrapSwitch('state',true,true);
+        }
+        else
+        {
+            $("#patternSwitch").bootstrapSwitch('state',false,true);
+        }
+    }
+    
+    else if(id=='mode')
+    {
+        console.log('mode');
+        if(value==true)
+        {
+            $("#modeSwitch").bootstrapSwitch('state',true,true);
+        }
+        else
+        {
+            $("#modeSwitch").bootstrapSwitch('state',false,true);
         }
     }
 });
@@ -85,16 +109,15 @@ socket.on('global',function(id,value){
 
 $("#patternSwitch").bootstrapSwitch();
 $("#patternSwitch").on('switchChange.bootstrapSwitch', function(event,state){
-     $.get("http://localhost:3001/pattern/change");
+    $.get("http://localhost:3001/pattern/change");
 });
 
 $("#modeSwitch").bootstrapSwitch();
+$("#modeSwitch").on('switchChange.bootstrapSwitch', function(event,state){
+    $.get("http://localhost:3001/mode/change");
+});
 
 ////////////////////////////////////////////////////////////
-
-/*$('#poke').click(function(){
-    socket.emit('message','Coucou le serveur');
-})*/
 
 $('#connect').click(function(){
     socket.emit('message','Tentative de connection');
@@ -106,16 +129,11 @@ $('#disconnect').click(function(){
     $.get('http://localhost:3001/stop');
 })
 $('#pauseStart').click(function(){
-    if(running)
-    {
-        $.get('http://localhost:3001/pause');
-    }
-    else
-    {
-        $.get('http://localhost:3001/start');
-    }
+    $.get('http://localhost:3001/start');
     
 })
+
+//////////////////////////////////////////////////////////
 
 $('#speedInputValidation').click(function(){
     var speedValue = document.getElementById("speedInput");
@@ -146,8 +164,16 @@ $('#speedUp').click(function(){
 })
 
 $('#light1').on('click', function() {
-    //socket.emit('message','Tentative de deconnection');
-   console.log('salut');
+    $.get('http://localhost:3001/toggle1');
+})
+$('#light2').on('click', function() {
+    $.get('http://localhost:3001/toggle2');
+})
+$('#light3').on('click', function() {
+    $.get('http://localhost:3001/toggle3');
+})
+$('#light4').on('click', function() {
+    $.get('http://localhost:3001/toggle4');
 })
 
 
